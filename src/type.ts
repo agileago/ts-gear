@@ -8,6 +8,7 @@ import type {
   BaseParameter,
   ParameterType,
   Path,
+  Spec,
 } from 'swagger-schema-official'
 import type { Options } from 'prettier'
 
@@ -262,4 +263,21 @@ export interface Project {
    * @default false
    * */
   useCache?: boolean
+  /**
+   * 请求代码模板
+   * @param args
+   */
+  template?: (options: {
+    project: Project
+    spec: Spec
+    parameterTypeName: string
+    responseType: {
+      successTypeName: string
+    }
+    requestFunctionName: string
+    parameterRequired: boolean
+    doc: string[] | undefined
+    httpMethod: string
+    urlPath: string
+  }) => string
 }

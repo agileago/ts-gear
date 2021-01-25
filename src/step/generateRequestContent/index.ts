@@ -9,18 +9,82 @@ import { sow, harvest } from '../../source'
 import { transformSwaggerPathToRouterPath } from '../../tool/transformSwaggerPathToRouterPath'
 import { getGlobal } from '../../projectGlobalVariable'
 import { assembleDoc } from '../../tool/assembleDoc'
-import { defaultShouldMockResponseStatement } from '../../constant'
 
-import { generateMockData } from './generateMockData'
 import { generateResponseType } from './generateResponseType'
 import { generateParameterType } from './generateParameterType'
 
+function requestTemplate(options: {
+  project: Project
+  spec: Spec
+  parameterTypeName: string
+  responseType: {
+    successTypeName: string
+  }
+  requestFunctionName: string
+  parameterRequired: boolean
+  doc: string[] | undefined
+  httpMethod: string
+  urlPath: string
+}): string {
+  const { withHost, withBasePath } = options.project
+  const {
+    parameterTypeName,
+    spec,
+    responseType,
+    requestFunctionName,
+    parameterRequired,
+    doc,
+    httpMethod,
+    urlPath,
+  } = options
+  const source = sow()
+  const requestFunctionSource = sow()
+  const requesterStatment = `return requester(url, {${withHost ? `, host: '${spec.host}'` : ''}${
+    withBasePath ? `, basePath: '${spec.basePath}'` : ''
+  }method${parameterTypeName ? ', ...option' : ''}}) as Promise<${responseType.successTypeName}>`
+  const functionStatment = requesterStatment
+  const functionData: OptionalKind<FunctionDeclarationStructure> = {
+    name: requestFunctionName,
+    isExported: false,
+    returnType: `Promise<${responseType.successTypeName}>`,
+    statements: functionStatment,
+    // docs: assembleDoc(request.schema),
+  }
+  functionData.parameters = []
+  if (parameterTypeName) {
+    functionData.parameters.push({
+      hasQuestionToken: !parameterRequired,
+      name: 'option',
+      type: parameterTypeName,
+    })
+  }
+  requestFunctionSource.addFunction(functionData)
+  source.addVariableStatement({
+    declarationKind: 'const' as VariableDeclarationKind.Const,
+    docs: doc,
+    isExported: true,
+    declarations: [
+      {
+        name: requestFunctionName,
+        initializer: `/* #__PURE__ */ (() => {
+            const method = '${httpMethod}'
+            const url = '${urlPath}'
+${harvest(requestFunctionSource)}
+${requestFunctionName}.method = method
+${requestFunctionName}.url = url
+return ${requestFunctionName}
+                         })()
+`,
+      },
+    ],
+  })
+  return harvest(source)
+}
+
 /** from swagger spec paths assemble request functions */
 export const generateRequestContent = (spec: Spec, project: Project) => {
-  const { apiFilter, withBasePath, withHost } = project
-  const { requestMap, definitionMap, enumMap } = getGlobal(project)
-
-  const shouldMockResponseStatement = project.shouldMockResponseStatement || defaultShouldMockResponseStatement
+  const { apiFilter } = project
+  const { requestMap } = getGlobal(project)
 
   const resultContent: string[] = []
   Object.getOwnPropertyNames(requestMap).forEach(requestFunctionName => {
@@ -49,56 +113,23 @@ export const generateRequestContent = (spec: Spec, project: Project) => {
     requestTypeScriptContent.push(responseType.responseTypeContent)
     requestTypeScriptContent.push(responseType.successTypeContent)
     const urlPath = join(spec.basePath || '/', transformSwaggerPathToRouterPath(String(request.pathname)))
-    const source = sow()
-    const requestFunctionSource = sow()
-    const requesterStatment = `return requester(url, {${withHost ? `, host: '${spec.host}'` : ''}${
-      withBasePath ? `, basePath: '${spec.basePath}'` : ''
-    }method${parameterTypeName ? ', ...option' : ''}}) as Promise<${responseType.successTypeName}>`
-    const functionStatment = `if (${shouldMockResponseStatement}) {
-      return Promise.resolve(${requestFunctionName}MockData)
+    const doc = assembleDoc(request.schema)
 
-    }
-    ${requesterStatment}`
-    const functionData: OptionalKind<FunctionDeclarationStructure> = {
-      name: requestFunctionName,
-      isExported: false,
-      returnType: `Promise<${responseType.successTypeName}>`,
-      statements: functionStatment,
-      // docs: assembleDoc(request.schema),
-    }
-    functionData.parameters = []
-    if (parameterTypeName) {
-      functionData.parameters.push({
-        hasQuestionToken: !parameterRequired,
-        name: 'option',
-        type: parameterTypeName,
-      })
-    }
-    const mockStatment = `export const ${requestFunctionName}MockData = (${JSON.stringify(
-      generateMockData(request, definitionMap, enumMap),
-    )} as unknown as ${responseType.successTypeName})`
-    source.addStatements(mockStatment)
-    requestFunctionSource.addFunction(functionData)
-    source.addVariableStatement({
-      declarationKind: 'const' as VariableDeclarationKind.Const,
-      docs: assembleDoc(request.schema),
-      isExported: true,
-      declarations: [
-        {
-          name: requestFunctionName,
-          initializer: `/* #__PURE__ */ (() => {
-            const method = '${httpMethod}'
-            const url = '${urlPath}'
-${harvest(requestFunctionSource)}
-${requestFunctionName}.method = method
-${requestFunctionName}.url = url
-return ${requestFunctionName}
-                         })()
-`,
-        },
-      ],
-    })
-    requestTypeScriptContent.push(harvest(source))
+    const tempate = project.template || requestTemplate
+
+    requestTypeScriptContent.push(
+      tempate({
+        project,
+        spec,
+        parameterTypeName,
+        parameterRequired,
+        responseType,
+        doc,
+        httpMethod,
+        urlPath,
+        requestFunctionName,
+      }),
+    )
     /** store typescript content to requestMap */
     request.typescriptContent = requestTypeScriptContent.join(EOL)
     resultContent.push(request.typescriptContent)

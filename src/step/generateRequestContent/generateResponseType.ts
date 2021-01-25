@@ -19,15 +19,15 @@ export const generateResponseType = (
   const responseTypeName = `${upperFirst(functionName)}Response`
 
   // use first 2xx response type as success response type
-  let successTypeContent = `export type ${responseTypeName}Success = any`
-  let responseTypeContent = `export type ${responseTypeName} = any`
+  let successTypeContent = `type ${responseTypeName}Success = any`
+  let responseTypeContent = `type ${responseTypeName} = any`
   const successTypeName = `${responseTypeName}Success`
   const responseStatuses = Object.getOwnPropertyNames(responses).sort()
   if (responseStatuses.length > 0) {
     const source = sow()
     const inter = source.addInterface({
       name: responseTypeName,
-      isExported: true,
+      isExported: false,
     })
     responseStatuses.forEach(status => {
       const statusRes = responses[status]
@@ -46,9 +46,9 @@ export const generateResponseType = (
     const firstResponseStatus = responseStatuses[0]
     if (firstResponseStatus.startsWith('2') || firstResponseStatus === 'default') {
       if (Number.isNaN(Number(firstResponseStatus))) {
-        successTypeContent = `export type ${responseTypeName}Success = ${responseTypeName}['${firstResponseStatus}']`
+        successTypeContent = `type ${responseTypeName}Success = ${responseTypeName}['${firstResponseStatus}']`
       } else {
-        successTypeContent = `export type ${responseTypeName}Success = ${responseTypeName}[${firstResponseStatus}]`
+        successTypeContent = `type ${responseTypeName}Success = ${responseTypeName}[${firstResponseStatus}]`
       }
     }
   }

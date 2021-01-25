@@ -1,11 +1,10 @@
 {
-  "name": "ts-gear",
+  "name": "tsg-tgjz",
   "version": "3.0.9",
   "description": "swagger to typescript with mock data",
   "main": "lib/index.js",
   "bin": {
-    "tsg": "lib/main.js",
-    "ts-gear": "lib/main.js"
+    "tsg-tgjz": "lib/main.js"
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",

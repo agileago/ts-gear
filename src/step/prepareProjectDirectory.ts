@@ -9,6 +9,8 @@ export const prepareProjectDirectory = (project: Project, tsGearConfigPath: stri
   const dest = join(tsGearConfigPath, project.dest, project.name)
   if (!existsSync(dest)) {
     sync(dest)
-    writeFileSync(join(dest, '.gitignore'), '.cache')
+    if (project.useCache) {
+      writeFileSync(join(dest, '.gitignore'), '.cache')
+    }
   }
 }

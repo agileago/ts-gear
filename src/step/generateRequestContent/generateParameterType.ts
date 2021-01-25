@@ -15,7 +15,7 @@ export const generateParameterType = (functionName: string, parameters: Array<Pa
   const source = sow()
   const parameterTypeName = `${upperFirst(functionName)}Option`
   const inter = source.addInterface({
-    isExported: true,
+    isExported: false,
     name: parameterTypeName,
     docs: [`request parameter type for ${functionName}`],
   })
