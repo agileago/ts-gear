@@ -101,7 +101,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "author": "superwf",
+  "author": "agileago",
   "license": "MIT",
   "publishConfig": {
     "registry": "http://registry.npmjs.org",
