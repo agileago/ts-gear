@@ -1,6 +1,6 @@
 {
   "name": "tsg-tgjz",
-  "version": "3.0.9",
+  "version": "3.1.0",
   "description": "swagger to typescript with mock data",
   "main": "lib/index.js",
   "bin": {
