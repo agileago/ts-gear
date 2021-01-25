@@ -16,7 +16,7 @@
   "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/superwf/ts-gear.git"
+    "url": "https://github.com/agileago/ts-gear.git"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -103,5 +103,9 @@
     }
   },
   "author": "superwf",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org",
+    "access": "public"
+  }
 }
