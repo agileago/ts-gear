@@ -53,7 +53,7 @@ export const assembleSchemaToGlobal = (spec: Spec, project: Project) => {
     forEach(httpMethods, httpMethod => {
       const operation = pathSchema[httpMethod]
       if (operation && !operation.deprecated) {
-        let { parameters } = operation
+        let { parameters = [] } = operation
         /**
          * 兼容openapiv3，将requestBody格式组装成与v2相同的数据结构
          * 这段代码不应该放到这里，以后有空抽离出去单独测试，如果有空的话
@@ -69,7 +69,7 @@ export const assembleSchemaToGlobal = (spec: Spec, project: Project) => {
             required,
             schema,
           })
-          parameters = v3Parameters
+          parameters = parameters.concat(v3Parameters)
         }
         requestMap[
           genFunctionName({
