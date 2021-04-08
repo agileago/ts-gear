@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/agileago/ts-gear/compare/v3.1.0...v3.2.0) (2021-04-08)
+
+
+### Features
+
+* 修复参数bug ([ebf01af](https://github.com/agileago/ts-gear/commit/ebf01aff6052b4a6df653ec57894a7b9b99aabc1))
+* 重新发布 ([652def7](https://github.com/agileago/ts-gear/commit/652def7f3472ef4d73b9da60b9f321734d518024))
+* 重新发布 ([6e287ed](https://github.com/agileago/ts-gear/commit/6e287ed9257da8dbb9d81b36cb29ed5ca187fd2f))
+
 ## [3.1.0](https://github.com/agileago/ts-gear/compare/v3.0.9...v3.1.0) (2021-01-25)
 
 
