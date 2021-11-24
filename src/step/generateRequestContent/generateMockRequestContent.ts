@@ -2,7 +2,7 @@ import type { FunctionDeclarationStructure, OptionalKind, VariableDeclarationKin
 import * as join from 'url-join'
 import type { Spec } from 'swagger-schema-official'
 import type { Project } from '../../type'
-import { transformSwaggerPathToRouterPath } from '../../tool/transformSwaggerPathToRouterPath'
+import { transformApiPathToRouterPath } from '../../tool/transformApiPathToRouterPath'
 import { harvest, sow } from '../../source'
 import { getGlobal } from '../../projectGlobalVariable'
 import { assembleDoc } from '../../tool/assembleDoc'
@@ -89,7 +89,7 @@ export const generateMockRequestContent = (spec: Spec, project: Project) => {
         mockRequest.mockData = mockData
         return mockRequest
       `
-    const urlPath = join(spec.basePath || '/', transformSwaggerPathToRouterPath(String(request.pathname)))
+    const urlPath = join(spec.basePath || '/', transformApiPathToRouterPath(String(request.pathname)))
     const sourceContent = `/* #__PURE__ */ (() => {
          /** http method */
          const method = '${httpMethod}'

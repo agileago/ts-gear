@@ -1,12 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2018",
     "noEmit": false,
     "rootDir": "./src",
     "paths": {
-      "src/*": ["someWrongPathToMakeSureNoSrcUsed"]
+      "src/*": [
+        "someWrongPathToMakeSureNoSrcUsed"
+      ]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

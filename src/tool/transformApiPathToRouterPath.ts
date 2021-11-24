@@ -1,5 +1,5 @@
 /** transform /abc/{id} to /abc/:id */
-export const transformSwaggerPathToRouterPath = (v: string) => {
+export const transformApiPathToRouterPath = (v: string) => {
   if (v.includes('{')) {
     return v
       .split('/')

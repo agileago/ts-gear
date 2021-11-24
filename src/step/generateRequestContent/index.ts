@@ -3,7 +3,7 @@ import type { Spec } from 'swagger-schema-official'
 import * as join from 'url-join'
 import type { Project } from '../../type'
 import { sow, harvest } from '../../source'
-import { transformSwaggerPathToRouterPath } from '../../tool/transformSwaggerPathToRouterPath'
+import { transformApiPathToRouterPath } from '../../tool/transformApiPathToRouterPath'
 import { getGlobal } from '../../projectGlobalVariable'
 import { assembleDoc } from '../../tool/assembleDoc'
 import { config } from '../../constant'
@@ -45,7 +45,7 @@ export const generateRequestContent = (spec: Spec, project: Project) => {
     requestTypeScriptContent.push(responseType.responseTypeContent)
     requestTypeScriptContent.push(responseType.successTypeContent)
     const basePath = project.withBasePath ? spec.basePath : null
-    const urlPath = join(basePath || '/', transformSwaggerPathToRouterPath(String(request.pathname)))
+    const urlPath = join(basePath || '/', transformApiPathToRouterPath(String(request.pathname)))
     const source = sow()
     const requestFunctionSource = sow()
     const requesterStatment = `return requester(url, {${[

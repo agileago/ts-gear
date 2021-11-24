@@ -8,8 +8,7 @@ type ReturnSchema = { [definitionsName: string]: Schema }
  * */
 export const getDefinition = (spec: Spec | OpenAPIObject): ReturnSchema => {
   if ('components' in spec) {
-    const v3spec = spec as OpenAPIObject
-    return v3spec.components?.schemas as ReturnSchema
+    return spec.components!.schemas as ReturnSchema
   }
   return spec.definitions!
 }

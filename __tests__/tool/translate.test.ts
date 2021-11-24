@@ -1,5 +1,4 @@
 import { baidu } from 'translation.js'
-
 import { translate } from 'src/tool/translate'
 
 type Translate = typeof baidu.translate
@@ -30,6 +29,12 @@ describe('translate by engines', () => {
 
   it('translate by google', async () => {
     expect(await translate('输出结果«查询参数»', 'google')).toBe('Output result «Query parameters»')
+  }, 5000)
+
+  it('translate word case', async () => {
+    expect(await translate('ResponseMessage«保质期看板-单据分析出参-报废单指标概览»', 'baidu')).toBe(
+      'Output result «Query parameters»',
+    )
   }, 5000)
 
   it('catch error', done => {

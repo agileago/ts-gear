@@ -15,7 +15,7 @@ export const processProject = async (project: Project, tsGearConfigPath: string)
   }
 
   if (project.translationEngine) {
-    await step.translateSchema(spec, project.translationEngine)
+    await step.translateSchema(spec, project)
   }
   const keepGeneric = project.keepGeneric !== false
   step.cleanRefAndDefinitionName(spec, keepGeneric)
@@ -51,6 +51,12 @@ export const runByCommand = async (): Promise<void> => {
  * same as runByCommand
  * should be used by nodejs env call
  * */
-export const run = async ({ projects, appPath }: { projects: Project[]; appPath: string }): Promise<void> => {
-  await Promise.all(projects.map(project => processProject(project, appPath)))
+export const run = async ({
+  projects,
+  tsgConfigDirectory,
+}: {
+  projects: Project[]
+  tsgConfigDirectory: string
+}): Promise<void> => {
+  await Promise.all(projects.map(project => processProject(project, tsgConfigDirectory)))
 }

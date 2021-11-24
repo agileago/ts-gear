@@ -7,15 +7,15 @@ describe('run', () => {
     await run({
       projects: [
         {
-          name: 'doc',
+          name: 'petV3',
           dest: 'service',
-          source: '../../fixture/doc.json',
+          source: '../../fixture/petV3.json',
           importRequesterStatement: 'import { requester } from "../../requester"',
           EOL: '\n',
           withBasePath: true,
         },
       ],
-      appPath: join(cwd, 'example/petProject/src'),
+      tsgConfigDirectory: join(cwd, 'example/petProject/src'),
     })
     expect(1).toBe(1)
   })

@@ -9,7 +9,6 @@ import { generateEnumName, generateEnumTypescriptContent } from '../tool/enumTyp
 import { generateRequestFunctionName } from '../tool/generateRequestFunctionName'
 import { getSchemaDeep } from '../tool/getSchemaDeep'
 import { getRequiredDeep } from '../tool/getRequiredDeep'
-// import type { OperationObject } from 'openapi3-ts'
 
 /**
  * collect definition to definitionMap

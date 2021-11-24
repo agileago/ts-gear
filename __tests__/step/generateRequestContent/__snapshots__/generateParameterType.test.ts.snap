@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/step/generateRequestContent/generateParameterType generateParameterType case 1 1`] = `
+Object {
+  "parameterRequired": true,
+  "parameterTypeContent": "/** @description request parameter type for postUserCreateWithList */
+export interface PostUserCreateWithListOption {
+    /**
+     * @description
+     *   List of user object
+     */
+    body: Array<User>;
+}
+",
+  "parameterTypeName": "PostUserCreateWithListOption",
+}
+`;
+
+exports[`src/step/generateRequestContent/generateParameterType generateParameterType case 2 1`] = `
+Object {
+  "parameterRequired": true,
+  "parameterTypeContent": "/** @description request parameter type for postUserCreateWithList */
+export interface PostUserCreateWithListOption {
+    /**
+     * @description
+     *   List of user object
+     */
+    body: Array<User>;
+}
+",
+  "parameterTypeName": "PostUserCreateWithListOption",
+}
+`;

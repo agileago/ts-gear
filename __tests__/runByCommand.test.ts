@@ -12,6 +12,8 @@ describe('run', () => {
     process.chdir(join(cwd, 'example', 'petProject'))
     await runByCommand()
     process.chdir(cwd)
+    // run success here, assert placeholder
+    expect(true).toBe(true)
   })
 
   it('use cleaned spec', async () => {
