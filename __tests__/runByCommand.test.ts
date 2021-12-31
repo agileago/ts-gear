@@ -14,7 +14,7 @@ describe('run', () => {
     process.chdir(cwd)
     // run success here, assert placeholder
     expect(true).toBe(true)
-  })
+  }, 999999)
 
   it('use cleaned spec', async () => {
     const spec = {
